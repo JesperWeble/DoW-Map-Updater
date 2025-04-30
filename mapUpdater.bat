@@ -25,15 +25,16 @@ echo extraction complete.
 :: Update this file
 copy "%EXTRACTED_FOLDER%\%TEMP%\mapUpdater.bat" "%~dp0" /y
 if "%~1" == "updated" exit
-start "" "%~dp0mapUpdater.bat" updated
+
 
 
 xcopy "%EXTRACTED_FOLDER%\%TEMP%\DXP2\*" "%TARGET_FOLDER%\" /s /y
 
-
 :: Cleanup
 del "%TEMP_ZIP%"
 rmdir /s /q "%EXTRACTED_FOLDER%"
+
+start "" "%~dp0mapUpdater.bat" updated
 
 echo Update Complete!
 pause
