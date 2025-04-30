@@ -1,25 +1,33 @@
 @echo off
 setlocal
 
-
 :: Paths
 :: %~dp0 means "Current Directory" i.e the directory of the .bat file.
 set "ZIP_URL=https://github.com/JesperWeble/DoW-Map-Updater/archive/refs/heads/main.zip"
-set "TEMP_ZIP=%~dp0mapUpdaterTEMP.zip"
+set "TEMP=DoW-Map-Updater-main"
+set "TEMP_ZIP=%~dp0%TEMP%.zip"
 set "EXTRACTED_FOLDER=%~dp0mapUpdaterTEMP"
-set "TARGET_FOLDER=%~dp0DoW-Map-Updater-main\DXP2"
+set "TARGET_FOLDER=%~dp0\DXP2"
+
+:: Update this file
+copy "%EXTRACTED_FOLDER%\%TEMP%\mapUpdater.bat" "%~dp0" /y
+if "%~1" == "updated" exit
+start "" "%~dp0mapUpdater.bat" updated
+
 
 :: Download
-bitsadmin /transfer downloadOperation /download /priority high "%ZIP_URL%" "%TEMP_ZIP%"
-if exist "%EXTRACTED_FOLDER%" rmdir /s /q "%EXTRACTED_FOLDER%"
+certutil -urlcache -split -f "%ZIP_URL%" "%TEMP_ZIP%" >nul
 if not exist "%TEMP_ZIP%" (
     echo ERROR: file was not downloaded.
     pause
 )
+echo %TEMP%.zip exists as DoW-Map-Updater-main.zip
+if not exist "%EXTRACTED_FOLDER%" mkdir "%EXTRACTED_FOLDER%"
 
 :: Extract
-tar -xf "%TEMP_ZIP%" -C "%EXTRACTED_FOLDER%"
-xcopy "%EXCTRACTED_FOLDER%\DXP2\*" "%TARGET_FOLDER%\" /s /y
+tar -xf "%TEMP_ZIP%" -C "%EXTRACTED_FOLDER%" >nul
+xcopy "%EXTRACTED_FOLDER%\%TEMP%\DXP2\*" "%TARGET_FOLDER%\" /s /y
+
 
 :: Cleanup
 del "%TEMP_ZIP%"
@@ -27,3 +35,8 @@ rmdir /s /q "%EXTRACTED_FOLDER%"
 
 echo Update Complete!
 pause
+
+
+
+
+@REM bitsadmin /transfer downloadOperation /download /priority high "%ZIP_URL%" "%TEMP_ZIP%"
