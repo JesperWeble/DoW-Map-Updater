@@ -1,6 +1,6 @@
 @echo off
 setlocal
-
+if "%~1" == "updated" exit
 :: Paths
 :: %~dp0 means "Current Directory" i.e the directory of the .bat file.
 set "ZIP_URL=https://github.com/JesperWeble/DoW-Map-Updater/archive/refs/heads/main.zip"
@@ -24,8 +24,6 @@ echo extraction complete.
 
 :: Update this file
 copy "%EXTRACTED_FOLDER%\%TEMP%\mapUpdater.bat" "%~dp0" /y
-if "%~1" == "updated" exit
-
 
 
 xcopy "%EXTRACTED_FOLDER%\%TEMP%\DXP2\*" "%TARGET_FOLDER%\" /s /y
