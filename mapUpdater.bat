@@ -9,10 +9,8 @@ set "TEMP_ZIP=%~dp0%TEMP%.zip"
 set "EXTRACTED_FOLDER=%~dp0mapUpdaterTEMP"
 set "TARGET_FOLDER=%~dp0\DXP2"
 
-:: Update this file
-copy "%EXTRACTED_FOLDER%\%TEMP%\mapUpdater.bat" "%~dp0" /y
-if "%~1" == "updated" exit
-start "" "%~dp0mapUpdater.bat" updated
+
+
 
 
 :: Download
@@ -26,6 +24,13 @@ if not exist "%EXTRACTED_FOLDER%" mkdir "%EXTRACTED_FOLDER%"
 
 :: Extract
 tar -xf "%TEMP_ZIP%" -C "%EXTRACTED_FOLDER%" >nul
+
+:: Update this file
+copy "%EXTRACTED_FOLDER%\%TEMP%\mapUpdater.bat" "%~dp0" /y
+if "%~1" == "updated" exit
+start "" "%~dp0mapUpdater.bat" updated
+
+
 xcopy "%EXTRACTED_FOLDER%\%TEMP%\DXP2\*" "%TARGET_FOLDER%\" /s /y
 
 
